@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;Token_search&apos; to &apos;Scanner&apos;&#x0D;&#x0A;- Original project: &apos;compiler&apos;&#x0D;&#x0A;- Original element: &apos;Token_search&apos;&#x0D;&#x0A;- Renamed element: &apos;Scanner&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;Token_search&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;{Token_search.java[Token_search" matchStrategy="1" name="Scanner" qualified="false" references="true" similarDeclarations="false" stamp="1383412024880" textual="false" version="1.0"/>
+</session>

@@ -1,0 +1,83 @@
+import java.util.HashMap;
+import java.util.Map;
+
+public class Token {
+	private int token;
+	private String value;
+	/**
+	 * 
+	 private static final int NOT_FOUND = 0; private static final int LETTER =
+	 * 1; private static final int DIGIT = 2; private static final int LITERAL =
+	 * 3; private static final int OPERATOR = 4; private static final int
+	 * COMMENT = 5; private static final int INCLUDE = 6;
+	 */
+
+	
+	private String token_types_array[] = { "absolute", "abstract", "all",
+			"and", "and_then", "array", "asm", "begin", "bindable", "case",
+			"class", "const", "constructor", "destructor", "div", "do",
+			"downto", "else", "end", "export", "file", "for", "function",
+			"goto", "if", "import", "implementation", "inherited", "in",
+			"inline", "interface", "is", "label", "mod", "module", "nil",
+			"not", "object", "of", "only", "operator", "or", "or_else",
+			"otherwise", "packed", "pow", "procedure", "program", "property",
+			"protected", "qualified", "record", "repeat", "restricted", "set",
+			"shl", "shr", "then", "to", "type", "unit", "until", "uses",
+			"value", "var", "view", "virtual", "while", "with", "xor", "TK_ID",
+			"TK_INTLIT", "TK_REALLIT", "TK_STRLIT", "TK_COMMENT", "+", "-",
+			"/", "*", "~", "&", "|", "!", "<", ">", "<>", "<=", ">=", "=",
+			":=", ";", "(", ")", ":" };
+
+	private static Map<String, Integer> TOKEN_TYPES = new HashMap<String, Integer>();
+	{
+		for (int i = 0; i < token_types_array.length; i++) {
+			Token.TOKEN_TYPES.put(token_types_array[i], i);
+		}
+	}
+
+	public Token() {
+
+	}
+
+	public Token(String token) {
+		this.token = Token.getTokenTypeID(token);
+	}
+
+	public String toString() {
+		return "Token " + this.token_types_array[this.token] + "\nValue "
+				+ this.value;
+	}
+
+	public static int getTokenTypeID(String token_type) {
+		if (Token.TOKEN_TYPES.containsKey(token_type)) {
+			return Token.TOKEN_TYPES.get(token_type);
+		}
+		/*
+		 * for (int i = 0; i < token_types_array.length; i++) { if
+		 * (token_type.equals(this.token_types_array[i])) return i; }
+		 */
+		return 0;
+	}
+
+	public int getToken() {
+		return token;
+	}
+
+	public void setToken(int token) {
+		this.token = token;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+	
+	public boolean isTokenType(String token_type_string){
+		int token_type_int = Token.getTokenTypeID(token_type_string);
+		return (token_type_int == this.getToken())?true:false;
+	}
+
+}

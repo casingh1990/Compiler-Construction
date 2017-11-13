@@ -1,0 +1,9 @@
+public class Compiler {
+	
+	public static void main(String[] args) {
+		String filename = "hello_world.pas";
+		Token_search tk_search = new Token_search(filename);
+		tk_search.findTokens();
+	}
+
+}

@@ -1,0 +1,71 @@
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class Parser {
+	private ArrayList<Token> tokens;
+	private Iterator<Token> tkIterator;
+
+	public Parser(ArrayList<Token> tokens_to_parse) {
+		this.tokens = tokens_to_parse;
+		this.tkIterator = this.tokens.iterator();
+	}
+
+	public void parse() {
+
+	}
+	
+	public Token curToken(){
+		return tkIterator.next();
+	}
+	
+	public void match(Token curop){
+		
+	}
+	
+	public void gen1(int curop){
+		
+	}
+
+	void  E(){
+		T();
+		Token curop = curToken();
+		while( (curop.isTokenType(Token.OP_ADD) )
+				|| (curop.isTokenType(Token.OP_SUB) ) ){
+			match(curop);
+			T();
+			if ( curop.isTokenType(Token.OP_ADD))
+				gen1(Token.OP_ADD);
+			else
+				gen1(Token.OP_SUB);
+		}
+	}
+	void T(){
+		F();
+		Token curop=curToken();
+		while(curop.isTokenType(Token.OP_MUL) || curop.isTokenType(Token.OP_DIV)){
+			match(curop);
+			F();
+			if ( curop.isTokenType(Token.OP_MUL))
+				gen1( Token.OP_MUL );
+			else
+				gen1( op_div );
+		}
+	}
+
+	void F(){
+		if (curtoken == TK_INTLIT ){
+			//push it 
+			gen1(op_pushi);
+			gen4(token_value);
+			gettoken();
+		}
+		if (curtoken == TK_REALLIT){
+			//push it
+			gettoken();
+		}
+		else
+		else error();
+	}
+
+	
+}

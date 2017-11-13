@@ -1,0 +1,172 @@
+import java.util.ArrayList;
+
+public class Machine {
+
+	private final int OP_PUSH = 1;
+	private final int OP_POP = 2;
+	private final int OP_PUSHI = 3;
+	private final int OP_ADD = 4;
+	private final int OP_SUB = 5;
+	private final int OP_DIV = 6;
+	private final int OP_MUL = 7;
+	private final int OP_ADDF = 8;
+	private final int OP_SUBF = 9;
+	private final int OP_DIVF = 10;
+	private final int OP_MULF = 11;
+	private final int STOP = 99;
+
+	private final int address_size = 4;
+
+	private Stack stack;
+	private Memory code;
+	private Memory data;
+
+	int ip = 0;
+	int sp = 0;
+
+	public Machine(byte code[]) {
+		this.code = new Memory(code);
+		this.data = new Memory();
+		this.stack = new Stack();
+	}
+
+	public void run() {
+		byte val[];
+		boolean running = true;
+		while (running) {
+			System.out.println("---------------------------------------");
+			System.out.println("Stack " + this.stack.toString() + " " + this.stack.sp);
+			System.out.println("Code " + this.code.toString());
+			System.out.println("Data " + this.data.toString());
+			System.out.println("---------------------------------------");
+			int a;
+			switch (this.readInstruction()) {
+			case OP_PUSH:
+				a = getAddress();// *(int *)(code+ip);
+				this.stack.pushMultiple(this.data.readM(a, 4));// *(int *)(data
+				break;
+			case OP_PUSHI:
+				val = this.code.readM(ip, address_size);
+				ip += address_size;
+				this.stack.pushMultiple(val);
+				break;
+			case OP_POP:
+				a = getAddress();
+				ip += 4;
+				val = this.stack.popMultiple(address_size);
+				this.data.writeM(a, val);
+				break;
+			case OP_ADD:
+				this.arithmetic_op(false, OP_ADD);
+				break;
+			case OP_SUB:
+				this.arithmetic_op(false, OP_SUB);
+				break;
+			case OP_DIV:
+				this.arithmetic_op(false, OP_DIV);
+				break;
+			case OP_MUL:
+				this.arithmetic_op(false, OP_MUL);
+				break;
+			case OP_ADDF:
+				this.arithmetic_op(true, OP_ADD);
+				break;
+			case OP_SUBF:
+				this.arithmetic_op(true, OP_SUB);
+				break;
+			case OP_DIVF:
+				this.arithmetic_op(true, OP_DIV);
+				break;
+			case OP_MULF:
+				this.arithmetic_op(true, OP_MUL);
+				break;
+			/*
+			 * also sub,mul,div,and, or,xor,shl,shr not and neg (unary)
+			 * fadd,fsub,fmul,fneg, fdiv cvr, cvi //convert eql, neg, ess, gtr,
+			 * leq,geq,feql,fneg (3. Control)
+			 */
+			case STOP:
+				ArrayList<Byte> tmp = this.stack.getStack();
+				System.out.println(tmp.toString());
+				running = false;
+				break;
+			/*
+			 * case jump: int a = *(int *)(code+ip); ip+=4; ip = a; break; case
+			 * jumpTrue: int a = *(int *)(code+ip); ip+=4; if (stack[sp] ==
+			 * true){ ip = a;} break; case jumpFalse: int a = *(int *)(code+ip);
+			 * ip+=4; if (stack[sp] == false){ ip = a;} break; also call and
+			 * return (4. I/O) case op_writeint: val = stack[--sp]; cout << val;
+			 * break;
+			 */
+			}
+		}
+	}
+
+	private int readInstruction() {
+		int i;
+		byte inst[] = this.code.readM(this.ip, 1);
+		this.ip++;
+		return (int) inst[0];
+	}
+
+	private int getAddress() {
+		int address = 0;
+		byte a[] = code.readM(ip, address_size);
+		for (int i = 0; i < address_size; i++) {
+			address += (int) a[i];
+		}
+		this.ip += address_size;
+		return address;
+	}
+
+	private void arithmetic_op(boolean float_op, int op) {
+		float a = this.stack.popi();
+		float b = this.stack.popi();
+
+		float result = 0;
+
+		switch (op) {
+		case OP_ADD:
+			result = a + b;
+			break;
+		case OP_SUB:
+			result = a - b;
+			break;
+		case OP_DIV:
+			result = a / b;
+			break;
+		case OP_MUL:
+			result = a * b;
+			break;
+		}
+
+		if (float_op) {
+			this.stack.pushf(result);
+		} else {
+			this.stack.pushi((int) result);
+		}
+	}
+
+	public static void main(String[] args) {
+		byte[] test_code = new byte[12];
+		
+		test_code[0] = 3;
+		test_code[1] = 0;
+		test_code[2] = 0;
+		test_code[3] = 0;
+		test_code[4] = 1;
+		test_code[5] = 3;
+		test_code[6] = 0;
+		test_code[7] = 0;
+		test_code[8] = 0;
+		test_code[9] = 4;
+		test_code[10] = 4;
+		test_code[11] = 99;
+		
+		Machine m = new Machine(test_code);
+		System.out.println(m.code.toString());
+		
+		m.run();
+	}
+
+}

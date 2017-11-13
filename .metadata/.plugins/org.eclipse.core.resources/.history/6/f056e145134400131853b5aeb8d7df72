@@ -1,0 +1,178 @@
+import java.util.HashMap;
+import java.util.Map;
+
+public class Token {
+	private int token;
+	private String value;
+	/**
+	 * 
+	 private static final int NOT_FOUND = 0; private static final int LETTER =
+	 * 1; private static final int DIGIT = 2; private static final int LITERAL =
+	 * 3; private static final int OPERATOR = 4; private static final int
+	 * COMMENT = 5; private static final int INCLUDE = 6;
+	 */
+
+	public static final int ABSOLUTE = 0;
+	public static final int ABSTRACT = 1;
+	public final int ALL = 2;
+	public final int AND = 3;
+	public final int AND_THEN = 4;
+	public final int ARRAY = 5;
+	public final int ASM = 6;
+	public final int BEGIN = 7;
+	public final int BINDABLE = 8;
+	public final int CASE = 9;
+	public final int CLASS = 10;
+	public final int CONST = 11;
+	public final int CONSTRUCTOR = 12;
+	public final int DESTRUCTOR = 13;
+	public final int DIV = 14;
+	public final int DO = 15;
+	public final int DOWNTO = 16;
+	public final int ELSE = 17;
+	public final int END = 18;
+	public final int EXPORT = 19;
+	public final int FILE = 20;
+	public final int FOR = 21;
+	public final int FUNCTION = 22;
+	public final int GOTO = 23;
+	public final int IF = 24;
+	public final int IMPORT = 25;
+	public final int IMPLEMENTATION = 26;
+	public final int INHERITED = 27;
+	public final int IN = 28;
+	public final int INLINE = 29;
+	public final int INTERFACE = 30;
+	public final int IS = 31;
+	public final int LABEL = 32;
+	public final int MOD = 33;
+	public final int MODULE = 34;
+	public final int NIL = 35;
+	public final int NOT = 36;
+	public final int OBJECT = 37;
+	public final int OF = 38;
+	public final int ONLY = 39;
+	public final int OPERATOR = 40;
+	public final int OR = 41;
+	public final int OR_ELSE = 42;
+	public final int OTHERWISE = 43;
+	public final int PACKED = 44;
+	public final int POW = 45;
+	public final int PROCEDURE = 46;
+	public final int PROGRAM = 47;
+	public final int PROPERTY = 48;
+	public final int PROTECTED = 49;
+	public final int QUALIFIED = 50;
+	public final int RECORD = 51;
+	public final int REPEAT = 52;
+	public final int RESTRICTED = 53;
+	public final int SET = 54;
+	public final int SHL = 55;
+	public final int SHR = 56;
+	public final int THEN = 57;
+	public final int TO = 58;
+	public final int TYPE = 59;
+	public final int UNIT = 60;
+	public final int UNTIL = 61;
+	public final int USES = 62;
+	public final int VALUE = 63;
+	public final int VAR = 64;
+	public final int VIEW = 65;
+	public final int VIRTUAL = 66;
+	public final int WHILE = 67;
+	public final int WITH = 68;
+	public final int XOR = 69;
+	public final int TK_ID = 70;
+	public final int TK_INTLIT = 71;
+	public final int TK_REALLIT = 72;
+	public final int TK_STRLIT = 73;
+	public final int TK_COMMENT = 74;
+	public final int OP_ADD = 75;
+	public final int OP_SUB = 76;
+	public final int OP_DIV = 77;
+	public final int OP_MUL = 78;
+	public final int OP_BIT_NOT = 79;
+	public final int OP_BIT_AND = 80;
+	public final int OP_BIT_OR = 81;
+	public final int OP_BIT_OR_EXCLAMATION = 82;
+	public final int OP_LESS_THAN = 83;
+	public final int OP_GREATER_THAN = 84;
+	public final int OP_NOT_EQ = 85;
+	public final int OP_LESS_THAN_EQ = 86;
+	public final int OP_GREATER_THAN_EQ = 87;
+	public final int OP_EQ = 88;
+	public final int OP_ASSIGN = 89;
+	public final int OP_EOL = 90;
+	public final int OP_L_BRACKET = 91;
+	public final int OP_R_BRAKET = 92;
+
+	private String token_types_array[] = { "absolute", "abstract", "all",
+			"and", "and_then", "array", "asm", "begin", "bindable", "case",
+			"class", "const", "constructor", "destructor", "div", "do",
+			"downto", "else", "end", "export", "file", "for", "function",
+			"goto", "if", "import", "implementation", "inherited", "in",
+			"inline", "interface", "is", "label", "mod", "module", "nil",
+			"not", "object", "of", "only", "operator", "or", "or_else",
+			"otherwise", "packed", "pow", "procedure", "program", "property",
+			"protected", "qualified", "record", "repeat", "restricted", "set",
+			"shl", "shr", "then", "to", "type", "unit", "until", "uses",
+			"value", "var", "view", "virtual", "while", "with", "xor", "TK_ID",
+			"TK_INTLIT", "TK_REALLIT", "TK_STRLIT", "TK_COMMENT", "+", "-",
+			"/", "*", "~", "&", "|", "!", "<", ">", "<>", "<=", ">=", "=",
+			":=", ";", "(", ")", ":" };
+
+	private static Map<String, Integer> TOKEN_TYPES = new HashMap<String, Integer>();
+	{
+		for (int i = 0; i < token_types_array.length; i++) {
+			Token.TOKEN_TYPES.put(token_types_array[i], i);
+		}
+	}
+
+	public Token() {
+
+	}
+
+	public Token(String token) {
+		this.token = Token.getTokenTypeID(token);
+	}
+
+	public String toString() {
+		return "Token " + this.token_types_array[this.token] + "\nValue "
+				+ this.value;
+	}
+
+	public static int getTokenTypeID(String token_type) {
+		if (Token.TOKEN_TYPES.containsKey(token_type)) {
+			return Token.TOKEN_TYPES.get(token_type);
+		}
+		/*
+		 * for (int i = 0; i < token_types_array.length; i++) { if
+		 * (token_type.equals(this.token_types_array[i])) return i; }
+		 */
+		return 0;
+	}
+
+	public int getToken() {
+		return token;
+	}
+
+	public void setToken(int token) {
+		this.token = token;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+	
+	public boolean isTokenType(String token_type_string){
+		int token_type_int = Token.getTokenTypeID(token_type_string);
+		
+		return (token_type_int == this.getToken())?true:false;
+		
+	}
+
+}

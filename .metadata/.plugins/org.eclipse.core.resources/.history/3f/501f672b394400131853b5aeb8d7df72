@@ -1,0 +1,111 @@
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class Parser {
+	
+	private final int OP_PUSH = 1;
+	private final int OP_POP = 2;
+	private final int OP_PUSHI = 3;
+	private final int OP_ADD = 4;
+	private final int OP_SUB = 5;
+	private final int OP_DIV = 6;
+	private final int OP_MUL = 7;
+	private final int OP_ADDF = 8;
+	private final int OP_SUBF = 9;
+	private final int OP_DIVF = 10;
+	private final int OP_MULF = 11;
+	private final int STOP = 99;
+	
+	private ArrayList<Token> tokens;
+	private int token_pointer;
+	private ArrayList<Byte> parsed;
+
+	public Parser(ArrayList<Token> tokens_to_parse) {
+		this.tokens = tokens_to_parse;
+		this.token_pointer = 0;
+		this.parsed = new ArrayList<>();
+	}
+
+	public void parse() {
+		this.E(); 	
+	}
+	
+	public Token curToken(){
+		return tokens.get(token_pointer);
+	}
+	
+	public void match(Token curop){
+		
+	}
+	
+	public void gen1(int curop){
+		this.parsed.add(new Byte((byte)curop));
+	}
+	
+	public void gen4(String value){
+		try{
+			ByteBuffer.allocate(4).putInt(Integer.parseInt(value)).array();
+		}
+		catch(NumberFormatException ei){
+			try{
+				Float.parseFloat(value);
+			}
+			catch(NumberFormatException ef){
+				
+			}
+			
+		}
+	}
+	
+	public void gettoken(){
+		this.token_pointer++;
+	}
+
+	void  E(){
+		T();
+		Token curop = curToken();
+		while( (curop.isTokenType(Token.OP_ADD) )
+				|| (curop.isTokenType(Token.OP_SUB) ) ){
+			match(curop);
+			T();
+			if ( curop.isTokenType(Token.OP_ADD))
+				gen1(this.OP_ADD);
+			else
+				gen1(this.OP_SUB);
+		}
+	}
+	void T(){
+		F();
+		Token curop=curToken();
+		while(curop.isTokenType(Token.OP_MUL) || curop.isTokenType(Token.OP_DIV)){
+			match(curop);
+			F();
+			if ( curop.isTokenType(Token.OP_MUL))
+				gen1( this.OP_MUL );
+			else
+				gen1( this.OP_DIV );
+		}
+	}
+
+	void F(){
+		Token curop = curToken();
+		if (curop.isTokenType(Token.TK_INTLIT)){
+			//push it 
+			gen1(this.OP_PUSHI);
+			gen4(curop.getValue());
+			gettoken();
+		}
+		if (curop.isTokenType(Token.TK_REALLIT)){
+			//push it
+			gettoken();
+		}
+		else{ 
+			error();
+		}
+	}
+
+	public void error(){
+		
+	}
+}

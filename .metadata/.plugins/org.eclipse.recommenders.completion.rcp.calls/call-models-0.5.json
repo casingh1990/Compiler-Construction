@@ -1,0 +1,17 @@
+{
+  "C:\\Program Files\\Java\\jre7\\lib\\rt.jar": {
+    "coordinate": "jre:jre:zip:call:1.0.0",
+    "location": "C:\\Program Files\\Java\\jre7\\lib\\rt.jar",
+    "status": "RESOLVED"
+  },
+  "F:\\Skydrive\\Documents\\City College\\Compiler Construction\\compiler\\src": {
+    "location": "F:\\Skydrive\\Documents\\City College\\Compiler Construction\\compiler\\src",
+    "status": "UNRESOLVED",
+    "error": "No class path info available for \u0027F:\\Skydrive\\Documents\\City College\\Compiler Construction\\compiler\\src\u0027. Skipped."
+  },
+  "F:\\Skydrive\\Documents\\City College\\Compiler Construction\\Machine\\src": {
+    "location": "F:\\Skydrive\\Documents\\City College\\Compiler Construction\\Machine\\src",
+    "status": "UNRESOLVED",
+    "error": "No class path info available for \u0027F:\\Skydrive\\Documents\\City College\\Compiler Construction\\Machine\\src\u0027. Skipped."
+  }
+}
